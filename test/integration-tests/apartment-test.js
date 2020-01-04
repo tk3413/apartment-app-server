@@ -29,7 +29,7 @@ describe("APARTMENT TESTS", () => {
         .expect("Content-type",/json/)
         .expect(201) 
         .end((err,res) => {
-            res.status.should.equal(200)
+            res.status.should.equal(201)
             done()
         });
     });

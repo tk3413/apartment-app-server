@@ -63,7 +63,7 @@ exports.create = (req, res) => {
     .spread((newOrExistingApt, created) => {
        if(created) {
             console.log(`created new apt`)
-            res.send(newOrExistingApt)
+            res.status(201).send(newOrExistingApt)
        } else {
             console.log(`${req.body.apt_nm_cd} apt number ${req.body.apt_num} already exists and price hasn't changed - skipping insert`)
             res.send(newOrExistingApt)
