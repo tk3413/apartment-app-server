@@ -18,8 +18,7 @@ echo "{
     \"database\": \"${database}\",
     \"host\": \"${host}\",
     \"port\": \"${port}\",
-    \"dialect\": \"${dialect}\",
-    \"operatorsAliases\": false
+    \"dialect\": \"${dialect}\"
   }
 }" > config/config.json
 
