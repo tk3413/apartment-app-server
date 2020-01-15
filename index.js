@@ -20,4 +20,10 @@ app.get('/apartment-info', info.findAll)
 app.get('/apartment-info/:apt_nm_cd', info.findByAptNmCd)
 app.post('/apartment-info', info.create)
 
+// health
+app.get('/health', (req, res) => { 
+    console.log('health checked')
+    res.sendStatus(200)
+})
+
 app.listen(port, () => console.log(`apartment-app listening on port ${port}!`))
