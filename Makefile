@@ -9,7 +9,9 @@ run:
 	node index.js
 
 atests:
-	npm run test
+	node index.js &
+	npm run test 
+	pkill node
 
 db:
 	./scripts/db-setup.sh

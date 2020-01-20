@@ -1,14 +1,15 @@
 const apartments = require('../models').apartment
-const Sequelize = require('sequelize');
+const Sequelize = require('sequelize')
 const Op = Sequelize.Op
+const moment = require('moment')
 
 exports.findAll = (req, res) => {
     console.log(`received request for all apartments`)
     apartments.findAndCountAll()
     .then(allApartments => {
         if(allApartments.count >0) {
-            console.log(allApartments)
-            res.send(allApartments)
+            console.log(allApartments.count)
+            res.send({count: allApartments.count})
         } else {
             console.log(`not able to find any apartments in DB`)
             res.sendStatus(404);
@@ -51,13 +52,13 @@ exports.create = (req, res) => {
             ],
         },
         defaults:{
-            apt_num: req.body.apt_num,
-            apt_price: req.body.apt_price,
-            apt_nm_cd: req.body.apt_nm_cd,
+            apt_num:    req.body.apt_num,
+            apt_price:  req.body.apt_price,
+            apt_nm_cd:  req.body.apt_nm_cd,
             apt_avl_dt: req.body.apt_avl_dt,
-            apt_size: req.body.apt_size,
-            apt_type: req.body.apt_type,
-            createdAt: req.body.cret_ts
+            apt_size:   req.body.apt_size,
+            apt_type:   req.body.apt_type,
+            createdAt:  req.body.cret_ts
         }
     })
     .spread((newOrExistingApt, created) => {
@@ -65,8 +66,20 @@ exports.create = (req, res) => {
             console.log(`created new apt`)
             res.status(201).send(newOrExistingApt)
        } else {
-            console.log(`${req.body.apt_nm_cd} apt number ${req.body.apt_num} already exists and price hasn't changed - skipping insert`)
-            res.send(newOrExistingApt)
+            console.log(`${req.body.apt_nm_cd} apt number ${req.body.apt_num} already exists and price hasn't changed - updating timestamp`)
+            apartments.update(
+                { updatedAt: moment() },
+                { where: { id: newOrExistingApt.id } }
+            )
+            .then(result => {
+                console.log(`updated the timestamp for apt number ${req.body.apt_num}`)
+                res.sendStatus(200)
+            })
+            .catch(error => {
+                console.log(`error occured while updating timestamp`)
+                console.log(error)
+                res.sendStatus(500)
+            })
         }
     })
     .catch(error => {
