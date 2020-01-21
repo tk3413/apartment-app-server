@@ -72,8 +72,7 @@ exports.create = (req, res) => {
             console.log(`created new apt`)
             res.status(201).send(newOrExistingApt)
        } else {
-            console.log(`${req.body.apt_nm_cd} apt number ${req.body.apt_num} already exists and price hasn't changed - updating timestamp`)
-            console.log(newOrExistingApt.dataValues.id)
+            console.log(`${req.body.apt_nm_cd} apt number ${req.body.apt_num} already exists and price hasn't changed - updating timestamp for id:${newOrExistingApt.dataValues.id}`)
             this.update(newOrExistingApt, res)
         }
     })

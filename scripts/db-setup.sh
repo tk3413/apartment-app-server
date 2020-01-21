@@ -18,7 +18,11 @@ echo "{
     \"database\": \"${database}\",
     \"host\": \"${host}\",
     \"port\": \"${port}\",
-    \"dialect\": \"${dialect}\"
+    \"dialect\": \"${dialect}\",
+    \"define\": {
+      \"underscored\": true,
+      \"timestamps\": false
+    }
   }
 }" > config/config.json
 
