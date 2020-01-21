@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     apt_size:   DataTypes.STRING,
     apt_price:  DataTypes.STRING,
     apt_avl_dt: DataTypes.DATE,
-  }, {});
+    cret_ts:    DataTypes.DATE,
+    updt_ts:    DataTypes.DATE
+  }, {
+  });
   
   return apartment;
 };

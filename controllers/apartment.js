@@ -24,7 +24,10 @@ exports.findAll = (req, res) => {
 
 exports.findByAptNum = (req, res) => {
     console.log(`received request for apartment number: ${req.params.apt_num}`)
-    apartments.findAndCountAll({where:{apt_num:req.params.apt_num}})
+    apartments.findAndCountAll({
+        where: { apt_num: req.params.apt_num },
+        order: [[ 'updt_ts', 'DESC' ]]
+    })
     .then(requestedApartments => {
         if(requestedApartments.count > 0) {
             console.log(`found ${requestedApartments.count} records for apt num ${req.params.apt_num}`)
@@ -45,12 +48,14 @@ exports.create = (req, res) => {
     console.log(`received request to post new apt: `)
     console.log(req.body)
     apartments.findOrCreate({
+        limit: 1,
         where:{ 
             [Op.and]: [
                 { apt_num:   { [Op.eq]: req.body.apt_num }},
                 { apt_price: { [Op.eq]: req.body.apt_price }}
-            ],
+            ]
         },
+        order: [[ 'cret_ts', 'DESC' ]],
         defaults:{
             apt_num:    req.body.apt_num,
             apt_price:  req.body.apt_price,
@@ -58,7 +63,8 @@ exports.create = (req, res) => {
             apt_avl_dt: req.body.apt_avl_dt,
             apt_size:   req.body.apt_size,
             apt_type:   req.body.apt_type,
-            createdAt:  req.body.cret_ts
+            cret_ts:  moment().format(),
+            updt_ts: null
         }
     })
     .spread((newOrExistingApt, created) => {
@@ -67,24 +73,28 @@ exports.create = (req, res) => {
             res.status(201).send(newOrExistingApt)
        } else {
             console.log(`${req.body.apt_nm_cd} apt number ${req.body.apt_num} already exists and price hasn't changed - updating timestamp`)
-            apartments.update(
-                { updatedAt: moment() },
-                { where: { id: newOrExistingApt.id } }
-            )
-            .then(result => {
-                console.log(`updated the timestamp for apt number ${req.body.apt_num}`)
-                res.sendStatus(200)
-            })
-            .catch(error => {
-                console.log(`error occured while updating timestamp`)
-                console.log(error)
-                res.sendStatus(500)
-            })
+            console.log(newOrExistingApt.dataValues.id)
+            this.update(newOrExistingApt, res)
         }
     })
     .catch(error => {
         console.log(`an error occured while checking to see if apt num ${req.body.apt_num} is already in the DB with a price of ${req.body.apt_price}`)
         console.log(`${error}`)
+        res.sendStatus(500)
+    })
+}
+
+exports.update = (apartment, res) => {
+    apartment.update(
+        { updt_ts: moment().format() }
+    )
+    .then(result => {
+        console.log(`updated the timestamp for apartment id: ${apartment.id}`)
+        res.sendStatus(200)
+    })
+    .catch(error => {
+        console.log(`error occurred during update: `)
+        console.log(error)
         res.sendStatus(500)
     })
 }
