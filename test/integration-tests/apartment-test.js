@@ -27,7 +27,7 @@ describe("APARTMENT TESTS", () => {
             "apt_num":"00410",
             "apt_type":"Studio",
             "apt_size":"557 Sq. Ft.",
-            "apt_price":"1,855",
+            "apt_prices":1855,
             "apt_avl_dt": "Feb 02, 2020",
             "cret_ts":"01/02/2020 22:11:25"
         })
@@ -47,7 +47,7 @@ describe("APARTMENT TESTS", () => {
             "apt_num":"00410",
             "apt_type":"Studio",
             "apt_size":"557 Sq. Ft.",
-            "apt_price":"1,855",
+            "apt_prices":1855,
             "apt_avl_dt": "Feb 02, 2020",
             "cret_ts":"01/02/2020 22:11:25"
         })

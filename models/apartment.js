@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     apt_type:   DataTypes.STRING,
     apt_size:   DataTypes.STRING,
     apt_price:  DataTypes.STRING,
+    apt_prices: DataTypes.FLOAT,
     apt_avl_dt: DataTypes.DATE,
     cret_ts:    DataTypes.DATE,
     updt_ts:    DataTypes.DATE

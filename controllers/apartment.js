@@ -52,13 +52,13 @@ exports.create = (req, res) => {
         where:{ 
             [Op.and]: [
                 { apt_num:   { [Op.eq]: req.body.apt_num }},
-                { apt_price: { [Op.eq]: req.body.apt_price }}
+                { apt_prices: { [Op.eq]: req.body.apt_prices }}
             ]
         },
         order: [[ 'cret_ts', 'DESC' ]],
         defaults:{
             apt_num:    req.body.apt_num,
-            apt_price:  req.body.apt_price,
+            apt_prices: req.body.apt_prices,
             apt_nm_cd:  req.body.apt_nm_cd,
             apt_avl_dt: req.body.apt_avl_dt,
             apt_size:   req.body.apt_size,
