@@ -2,6 +2,9 @@ DOCKERUSERNAME=tk3413
 APPNAME=apartment-app-server
 TAG=latest
 
+help: 
+	./scripts/help.sh
+
 dev:
 	npm run dev
 
