@@ -35,7 +35,8 @@ module.exports = resolvers = {
         attributes: [
           Sequelize.fn('AVG', Sequelize.col('apt_prices')),
           Sequelize.fn('RIGHT', Sequelize.col('apt_num'), 2),
-          'apt_size'
+          'apt_size',
+          'apt_type'
         ],
         where: {
           [Op.and]: [
@@ -43,7 +44,7 @@ module.exports = resolvers = {
             { apt_prices: { [Op.gt]: 1 } }
           ]
         },
-        group: ['apt_size', Sequelize.fn('RIGHT', Sequelize.col('apt_num'), 2)]
+        group: ['apt_size', 'apt_type', Sequelize.fn('RIGHT', Sequelize.col('apt_num'), 2)]
       })
     }
   }

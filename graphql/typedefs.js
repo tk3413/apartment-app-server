@@ -34,6 +34,7 @@ const typeDefs = gql`
     right: String
     count: Int
     apt_size: String
+    apt_type: String
   }
 `
 
