@@ -2,12 +2,19 @@ const gql = require('graphql-tag')
 
 const typeDefs = gql`
   type Query {
+    lastUpdate(apt_nm_cd: String): [Apartment]
+
     apartmentByAptNum(apt_nm_cd: String!, apt_num: String): [Apartment]
 
     countGroupByAptSize(apt_nm_cd: String): [Vita_Apt_Num_Count]
 
     countGroupByVitaAptNum: [Vita_Apt_Num_Count]
+
     averagePrice(apt_nm_cd: String): [AveragePrice]
+
+    daysStale(apt_nm_cd: String): [DaysStale]
+
+    totalCount(apt_nm_cd: String): TotalCount
   }
 
   type Apartment {
@@ -35,6 +42,15 @@ const typeDefs = gql`
     count: Int
     apt_size: String
     apt_type: String
+  }
+
+  type DaysStale {
+    count: Int
+    days_stale: Int
+  }
+
+  type TotalCount {
+    count: Int
   }
 `
 

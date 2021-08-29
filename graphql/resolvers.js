@@ -4,6 +4,42 @@ const Op = Sequelize.Op
 
 module.exports = resolvers = {
   Query: {
+
+    async totalCount (obj, args, context, info) {
+      return apartments
+      .count({
+        where: { 'apt_nm_cd': args.apt_nm_cd }
+      }).then(count => {
+        console.log(count)
+        return count
+      })
+    },
+
+    async daysStale (obj, args, context, info) {
+      // date(updt_ts) - date(cret_ts) as days_stale
+      return apartments
+        .count({
+          attributes: [
+            Sequelize.literal('(date(updt_ts) - date(cret_ts)) as "days_stale"')
+            ],
+          where: { 'apt_nm_cd': args.apt_nm_cd },
+          group: [Sequelize.literal('(date(updt_ts) - date(cret_ts))')]
+        })
+        .then(count => {
+          console.log(count)
+          return count
+        })
+    },
+
+    async lastUpdate (obj, args, context, info) {
+      return apartments.findAll({
+        attributes: ['updt_ts'],
+        where: { apt_nm_cd: args.apt_nm_cd },
+        order: [[ 'updt_ts', 'DESC' ]],
+        limit: 1
+      })
+    },
+
     async apartmentByAptNum (obj, args, context, info) {
       return await apartments.gqlFindByAptNum(args.apt_num)
     },

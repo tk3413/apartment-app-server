@@ -3,3 +3,4 @@ config/
 config-backup.json
 package-lock.json
 migrations
+.DS_STORE

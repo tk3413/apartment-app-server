@@ -26,7 +26,7 @@ docker-image:
 	docker build --rm -t ${DOCKERUSERNAME}/${APPNAME}:${TAG} .
 
 docker-run: docker-image
-	docker run -p 3000:3000 --name ${APPNAME} ${APPNAME}:${TAG}
+	docker run -p 3000:3000 --network host --rm --name ${APPNAME} ${DOCKERUSERNAME}/${APPNAME}:${TAG}
 
 docker-stop:
 	docker stop ${APPNAME}
@@ -37,3 +37,6 @@ docker-push: docker-image
 	
 docker-clean:
 	echo "y" | docker system prune
+
+docker-inspect:
+	docker run -it --entrypoint /bin/bash ${APPNAME}:${TAG}
